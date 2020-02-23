@@ -96,8 +96,22 @@ public class MemoListActivity extends AppCompatActivity {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
 
                     String all  = "", temp = "";
+                    boolean checkContent = true;
                     while ((temp = bufferedReader.readLine()) != null) {
-                        all += temp;
+
+                        if ( temp.equals("<content>")) {
+                            checkContent = false;
+                            all += temp;
+                            continue;
+                        }
+                        else if (temp.equals("<time>"))
+                            checkContent = true;
+
+                        if(checkContent)
+                            all += temp;
+                        else{
+                            all += temp + "\n";
+                        }
                     }
 
                     String title = all.split("<title>")[1].split("<content>")[0];
