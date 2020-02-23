@@ -1,7 +1,6 @@
 package com.example.forline;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +56,9 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         if(memo.getTitle().length() > 10 ){
             title = title.substring(0,10) + "....";
         }
-        Log.d("음음음",content);
+
         content = content.split("\n")[0];
-        Log.d("dasda음음음",content);
+
         if(content.length() > 13) {
             content = content.substring(0, 13) + "....";
         }

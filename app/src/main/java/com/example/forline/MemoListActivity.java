@@ -18,8 +18,6 @@ import java.util.ArrayList;
 
 public class MemoListActivity extends AppCompatActivity {
 
-    //파일 명은 시간과 내용
-    private final String fileName = "items.list" ;
 
     //RecyclerView를 사용하기 위한 변수들을 선언
     private RecyclerView recyclerView;
@@ -83,11 +81,13 @@ public class MemoListActivity extends AppCompatActivity {
         String dirPath = getFilesDir().getPath();
         dirPath = dirPath.replace("files", "memo_history");
         File file = new File(dirPath);
+        if(!file.exists()){
+            return;
+        }
         // 파일이 1개 이상이면 파일 이름 출력
         if( file.listFiles().length > 0) {
             for (File f : file.listFiles()) {
                 String str = f.getName();
-                Log.v(null, "fi2123leNmae : " + str);
 
                 // 파일 내용 읽어 오기
                 String loadPath = dirPath + "/" + str;
@@ -116,12 +116,11 @@ public class MemoListActivity extends AppCompatActivity {
 
                     String title = all.split("<title>")[1].split("<content>")[0];
                     String content = all.split("<content>")[1].split("<time>")[0];
-                    String time = all.split("<time>")[1];
+                    String time = all.split("<time>")[1].split("<detime>")[0];
+                    String detime = all.split("<detime>")[1];
 
 
-                    Log.v(null, "" +  all.split("<title>")[1]);
-
-                    memos.add(new Memo(title, content, time));
+                    memos.add(new Memo(title, content, time, detime));
                     mAdapter.notifyDataSetChanged();
                     Log.v(null, "" + title);
                     Log.v(null, "" + content);

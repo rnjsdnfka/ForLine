@@ -37,7 +37,7 @@ public class MemoEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                saveMemosToFile(new Memo(title_et.getText().toString(), content_et.getText().toString(), format.format(today)));
+                saveMemosToFile(new Memo(title_et.getText().toString(), content_et.getText().toString(), format.format(today),format2.format(today)));
                 finish();
             }
         });
@@ -60,14 +60,16 @@ public class MemoEditActivity extends AppCompatActivity {
         String title = "<title>\n" + memo.getTitle() + "\n";
         String content = "<content>\n" + memo.getContent() + "\n";
         String time = "<time>\n" + memo.getCurrent_time() + "\n";
+        String detime = "<detime>\n" + memo.getDetime() + "\n";
 
 
-        File saveFile = new File(dirPath  + "/" + format2.format(today) + ".txt");
+        File saveFile = new File(dirPath  + "/" + memo.getDetime() + ".txt");
         try{
             FileOutputStream fos = new FileOutputStream(saveFile);
             fos.write(title.getBytes());
             fos.write(content.getBytes());
             fos.write(time.getBytes());
+            fos.write(detime.getBytes());
             fos.close();
             Toast.makeText(getApplicationContext(),"저장 성공", Toast.LENGTH_SHORT).show();
         } catch (IOException e){
