@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,11 +21,13 @@ public class MemoViewActivity extends AppCompatActivity {
 
     private EditText title_et;
     private EditText content_et;
+    private TextView time_tv;
     private Button modify_btn;
 
     private Date today = new Date();
     private SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
     private SimpleDateFormat format2 = new SimpleDateFormat("yyyy. MM. dd. HH. mm. ss");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +36,14 @@ public class MemoViewActivity extends AppCompatActivity {
 
         title_et = (EditText)findViewById(R.id.edit_title_view);
         content_et = (EditText)findViewById(R.id.edit_content_view);
+        time_tv = (TextView)findViewById(R.id.time_tv_view);
         modify_btn = (Button) findViewById(R.id.modify_btn);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         title_et.setText(intent.getExtras().getString("title"));
         content_et.setText(intent.getExtras().getString("content"));
+        time_tv.setText(intent.getExtras().getString("time"));
+
 
         modify_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,19 +51,30 @@ public class MemoViewActivity extends AppCompatActivity {
                 if(title_et.isEnabled()) {
                     title_et.setEnabled(false);
                     content_et.setEnabled(false);
+                    Toast.makeText(getApplicationContext(),"수정을 완료하였습니다.", Toast.LENGTH_LONG).show();
+                    saveMemosToFile(new Memo(title_et.getText().toString(), content_et.getText().toString(), format.format(today),format2.format(today))
+                    ,intent.getExtras().getString("detime") );
                 }
                 else{
                     title_et.setEnabled(true);
                     content_et.setEnabled(true);
+                    Toast.makeText(getApplicationContext(),"수정이 가능합니다", Toast.LENGTH_LONG).show();
+                    modify_btn.setText("수정완료하기");
                 }
             }
         });
     }
 
-    private void saveMemosToFile(Memo memo)  {
+    private void saveMemosToFile(Memo memo, String detime)  {
         String dirPath = getFilesDir().getPath();
         dirPath = dirPath.replace("files", "memo_history");
-        File file = new File(dirPath);
+        File file = new File(dirPath +"/" + detime + ".txt");
+
+        if(file.exists()){
+            file.delete();
+        }
+
+        file = new File(dirPath);
 
         // 일치하는 폴더가 없으면 생성
         if( !file.exists()){
@@ -70,18 +87,24 @@ public class MemoViewActivity extends AppCompatActivity {
         String title = "<title>\n" + memo.getTitle() + "\n";
         String content = "<content>\n" + memo.getContent() + "\n";
         String time = "<time>\n" + memo.getCurrent_time() + "\n";
+        detime = "<detime>\n" + memo.getDetime() + "\n";
 
 
-        File saveFile = new File(dirPath  + "/" + format2.format(today) + ".txt");
+        File saveFile = new File(dirPath  + "/" + memo.getDetime() + ".txt");
         try{
             FileOutputStream fos = new FileOutputStream(saveFile);
             fos.write(title.getBytes());
             fos.write(content.getBytes());
             fos.write(time.getBytes());
+            fos.write(detime.getBytes());
             fos.close();
             Toast.makeText(getApplicationContext(),"저장 성공", Toast.LENGTH_SHORT).show();
         } catch (IOException e){
             e.getStackTrace();
         }
+    }
+    @Override
+    public void onBackPressed(){
+        finish();
     }
 }

@@ -76,4 +76,8 @@ public class MemoEditActivity extends AppCompatActivity {
             e.getStackTrace();
         }
     }
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 }

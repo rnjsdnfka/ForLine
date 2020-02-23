@@ -2,7 +2,6 @@ package com.example.forline;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -71,6 +70,7 @@ public class MemoListActivity extends AppCompatActivity {
                 intent.putExtra("title",memo.getTitle());
                 intent.putExtra("content",memo.getContent());
                 intent.putExtra("time",memo.getCurrent_time());
+                intent.putExtra("detime",memo.getDetime());
 
                 startActivity(intent);
             }
@@ -116,15 +116,14 @@ public class MemoListActivity extends AppCompatActivity {
 
                     String title = all.split("<title>")[1].split("<content>")[0];
                     String content = all.split("<content>")[1].split("<time>")[0];
+                    content = content.substring(0, content.length() - 1);
                     String time = all.split("<time>")[1].split("<detime>")[0];
                     String detime = all.split("<detime>")[1];
 
 
                     memos.add(new Memo(title, content, time, detime));
                     mAdapter.notifyDataSetChanged();
-                    Log.v(null, "" + title);
-                    Log.v(null, "" + content);
-                    Log.v(null, "" + time);
+
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
