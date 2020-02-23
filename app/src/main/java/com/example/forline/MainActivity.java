@@ -14,7 +14,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,10 +46,37 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new MemoListAdapter(getApplicationContext(), memos, R.layout.activity_main);
-        memos.add(new Memo("우람","자야겠다;;"));
         // specify an adapter (see also next example)
 //        mAdapter = new MemoListAdapter(myDataset);
+        Date today = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
+
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+        memos.add(new Memo("타이틀","내용",format.format(today)));
+
         recyclerView.setAdapter(mAdapter);
+
+        // 메모가 많을 경우 상단으로 올리기
+        recyclerView.scrollToPosition(0);
         mAdapter.notifyDataSetChanged();
         saveMemosToFile();
     }

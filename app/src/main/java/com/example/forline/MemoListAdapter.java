@@ -1,6 +1,7 @@
 package com.example.forline;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +34,14 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull MemoListAdapter.ViewHolder holder, int position) {
         final Memo memo = memos.get(position);
-
+        if(position == 0)
+        {
+            holder.initial_line.setVisibility(View.VISIBLE);
+            Log.d("우람","ㅇ");
+        }
         holder.title.setText(memo.getTitle());
         holder.content.setText(memo.getContent());
+        holder.time.setText(memo.getCurrent_time());
     }
 
     @Override
@@ -48,11 +54,15 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
 
         private TextView title;
         private TextView content;
+        private TextView time;
+        private View initial_line;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
             content = itemView.findViewById(R.id.tv_content);
+            time = itemView.findViewById(R.id.time_tv);
+            initial_line = itemView.findViewById(R.id.initial_line);
         }
     }
 }
