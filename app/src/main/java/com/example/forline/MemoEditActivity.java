@@ -36,7 +36,6 @@ public class MemoEditActivity extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 saveMemosToFile(new Memo(title_et.getText().toString(), content_et.getText().toString(), format.format(today),format2.format(today)));
                 finish();
             }

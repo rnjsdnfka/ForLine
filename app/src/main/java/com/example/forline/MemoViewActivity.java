@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class MemoViewActivity extends AppCompatActivity {
     private EditText content_et;
     private TextView time_tv;
     private Button modify_btn;
+    private ImageButton delete_btn;
 
     private Date today = new Date();
     private SimpleDateFormat format = new SimpleDateFormat("yyyy. MM. dd");
@@ -38,6 +40,7 @@ public class MemoViewActivity extends AppCompatActivity {
         content_et = (EditText)findViewById(R.id.edit_content_view);
         time_tv = (TextView)findViewById(R.id.time_tv_view);
         modify_btn = (Button) findViewById(R.id.modify_btn);
+        delete_btn = (ImageButton)findViewById(R.id.delete_memo_btn);
 
         final Intent intent = getIntent();
         title_et.setText(intent.getExtras().getString("title"));
@@ -61,6 +64,20 @@ public class MemoViewActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"수정이 가능합니다", Toast.LENGTH_LONG).show();
                     modify_btn.setText("수정완료하기");
                 }
+            }
+        });
+
+        delete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String dirPath = getFilesDir().getPath();
+                dirPath = dirPath.replace("files", "memo_history");
+                File file = new File(dirPath +"/" + intent.getExtras().getString("detime")  + ".txt");
+
+                if(file.exists()){
+                    file.delete();
+                }
+                finish();
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.forline;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -82,10 +83,13 @@ public class MemoListActivity extends AppCompatActivity {
         dirPath = dirPath.replace("files", "memo_history");
         File file = new File(dirPath);
         if(!file.exists()){
+            Log.d("돼잊","ㅇㅇ");
+            mAdapter.notifyDataSetChanged();
             return;
         }
         // 파일이 1개 이상이면 파일 이름 출력
         if( file.listFiles().length > 0) {
+            Log.d("ㅇㅇ","돼지");
             for (File f : file.listFiles()) {
                 String str = f.getName();
 
@@ -122,13 +126,15 @@ public class MemoListActivity extends AppCompatActivity {
 
 
                     memos.add(new Memo(title, content, time, detime));
-                    mAdapter.notifyDataSetChanged();
+
 
                 } catch (Exception e) {
                     e.getStackTrace();
                 }
             }
         }
+
+        mAdapter.notifyDataSetChanged();
     }
     @Override
     public void onStart() {
