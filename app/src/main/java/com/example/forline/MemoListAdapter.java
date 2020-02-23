@@ -1,7 +1,6 @@
 package com.example.forline;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,18 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
         this.item_layout = item_layout;
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(View v, int position, Memo memo);
+    }
+
+    // 리스너 객체 참조를 저장하는 변수
+    private OnItemClickListener mListener = null ;
+
+    // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener ;
+    }
+
     @NonNull
     @Override
     public MemoListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,16 +43,32 @@ public class MemoListAdapter extends RecyclerView.Adapter<MemoListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MemoListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MemoListAdapter.ViewHolder holder, final int position) {
         final Memo memo = memos.get(position);
         if(position == 0)
         {
             holder.initial_line.setVisibility(View.VISIBLE);
-            Log.d("우람","ㅇ");
         }
-        holder.title.setText(memo.getTitle());
-        holder.content.setText(memo.getContent());
+
+        String title = memo.getTitle();
+        String content = memo.getContent();
+
+        if(memo.getTitle().length() > 10){
+            title = title.substring(0,10) + "....";
+        }
+        if(content.length() > 13) {
+            content = content.substring(0, 13) + "....";
+        }
+        holder.title.setText(title);
+        holder.content.setText(content);
         holder.time.setText(memo.getCurrent_time());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) mListener.onItemClick(view, position, memo);
+            }
+        });
     }
 
     @Override
